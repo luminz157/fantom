@@ -31,7 +31,6 @@ export default function SignupPage() {
     }
     setLoading(true)
     try {
-      // Mock signup — just login with the chosen role
       await loginAndRedirect(email, password, role)
     } catch {
       setError('Something went wrong. Please try again.')
@@ -77,7 +76,7 @@ export default function SignupPage() {
                 className={`p-3 rounded-xl border-2 text-left transition-all ${
                   role === opt.value
                     ? 'border-teal-500 bg-teal-50 dark:bg-teal-900/30'
-                    : 'border-[var(--border-color)] hover:border-teal-300 dark:hover:border-teal-700'
+                    : 'border-[var(--border-color)] hover:border-teal-300'
                 }`}
               >
                 <div className="text-xl mb-1">{opt.emoji}</div>
