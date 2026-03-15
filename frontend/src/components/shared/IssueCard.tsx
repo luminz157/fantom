@@ -40,14 +40,7 @@ export function IssueCard({
   }
 
   return (
-    <div
-      className={`
-        glass-card border-l-4 ${severityBorder[issue.severity]}
-        hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5
-        overflow-hidden group ${className}
-      `}
-    >
-      {/* Issue Photo */}
+    <div className={`glass-card border-l-4 ${severityBorder[issue.severity]} hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5 overflow-hidden group ${className}`}>
       {issue.photoUrl && !imgError && (
         <div className="relative h-40 overflow-hidden">
           <img
@@ -56,14 +49,12 @@ export function IssueCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             onError={() => setImgError(true)}
           />
-          {/* Overlay badges */}
           <div className="absolute top-2 left-2 flex gap-1.5">
             <SeverityBadge severity={issue.severity} size="sm" />
           </div>
           <div className="absolute top-2 right-2">
             <StatusPill status={issue.status} size="sm" />
           </div>
-          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
           <div className="absolute bottom-2 left-2">
             <span className="text-white text-xs font-medium bg-black/40 rounded px-1.5 py-0.5">
@@ -74,7 +65,6 @@ export function IssueCard({
       )}
 
       <div className="p-4">
-        {/* Header */}
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
@@ -83,7 +73,9 @@ export function IssueCard({
                 {ISSUE_TYPE_LABELS[issue.type]}
               </h3>
             </div>
-            <p className="text-xs text-[var(--text-muted)] font-mono">#{issue.id.slice(-8).toUpperCase()}</p>
+            <p className="text-xs text-[var(--text-muted)] font-mono">
+              #{issue.id.slice(-8).toUpperCase()}
+            </p>
           </div>
           {(!issue.photoUrl || imgError) && (
             <div className="flex flex-col items-end gap-1">
@@ -93,12 +85,10 @@ export function IssueCard({
           )}
         </div>
 
-        {/* Description */}
         <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-3 leading-relaxed">
           {issue.description}
         </p>
 
-        {/* Meta row */}
         <div className="flex items-center gap-3 text-xs text-[var(--text-muted)] mb-3">
           <span className="flex items-center gap-1">
             <MapPin className="w-3 h-3" />
@@ -110,24 +100,18 @@ export function IssueCard({
           </span>
         </div>
 
-        {/* Progress bar */}
         <div className="mb-3">
           <div className="flex justify-between text-xs text-[var(--text-muted)] mb-1">
             <span>Resolution Progress</span>
             <span className="font-medium text-[var(--accent)]">{issue.progressPercent}%</span>
           </div>
           <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{ width: `${issue.progressPercent}%` }}
-            />
+            <div className="progress-fill" style={{ width: `${issue.progressPercent}%` }} />
           </div>
         </div>
 
-        {/* Volunteers */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {/* Avatar stack */}
             <div className="flex -space-x-2">
               {issue.volunteers.slice(0, 3).map((v) => (
                 <div
@@ -155,14 +139,12 @@ export function IssueCard({
               {issue.volunteers.length} volunteer{issue.volunteers.length !== 1 ? 's' : ''}
             </span>
           </div>
-
           <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
             <ThumbsUp className="w-3 h-3" />
             {issue.upvotes}
           </div>
         </div>
 
-        {/* Action Buttons */}
         {variant === 'volunteer' && (
           <div className="mt-3 flex gap-2">
             {!hasJoined ? (
@@ -175,9 +157,7 @@ export function IssueCard({
             ) : (
               <button
                 onClick={() => onChatClick?.(issue.id)}
-                className="flex-1 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 
-                           border border-teal-200 dark:border-teal-800 rounded-lg text-xs py-2 
-                           font-semibold hover:bg-teal-100 transition-colors"
+                className="flex-1 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800 rounded-lg text-xs py-2 font-semibold hover:bg-teal-100 transition-colors"
               >
                 💬 Open Team Chat
               </button>
@@ -196,9 +176,7 @@ export function IssueCard({
         {variant === 'citizen' && onViewDetail && (
           <button
             onClick={() => onViewDetail(issue.id)}
-            className="mt-3 w-full flex items-center justify-center gap-1 text-xs 
-                       text-teal-600 dark:text-teal-400 hover:text-teal-700 font-medium 
-                       py-1.5 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
+            className="mt-3 w-full flex items-center justify-center gap-1 text-xs text-teal-600 dark:text-teal-400 hover:text-teal-700 font-medium py-1.5 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/20 transition-colors"
           >
             View Details <ChevronRight className="w-3 h-3" />
           </button>

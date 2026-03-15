@@ -3,11 +3,10 @@
 import React, { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import {
-  Bell, Sun, Moon, Menu, X, LogOut, User,
+  Bell, Sun, Moon, Menu, X, LogOut,
   LayoutDashboard, Users, ShieldCheck, MapPin
 } from 'lucide-react'
-import { useTheme } from '@/lib/context'
-import { useAppState } from '@/lib/context'
+import { useTheme, useAppState } from '@/lib/context'
 
 interface NavbarProps {
   onMenuToggle?: () => void
@@ -18,16 +17,13 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { isDark, toggleTheme } = useTheme()
-  const { currentUser, isLoggedIn, logout, notifications, unreadCount, markNotificationRead } = useAppState()
+  const {
+    currentUser, isLoggedIn, logout,
+    notifications, unreadCount, markNotificationRead,
+  } = useAppState()
 
   const [showNotifs, setShowNotifs] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
-
-  const roleLabel: Record<string, string> = {
-    citizen: 'Citizen',
-    volunteer: 'Volunteer',
-    admin: 'Admin',
-  }
 
   const navLinks = [
     { label: 'Citizen', href: '/citizen', icon: LayoutDashboard },
@@ -45,7 +41,6 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
     <nav className="sticky top-0 z-40 w-full border-b border-[var(--border-color)] bg-[var(--bg-secondary)]/80 backdrop-blur-xl">
       <div className="flex items-center justify-between h-14 px-4 lg:px-6">
 
-        {/* Left — Logo + Menu toggle */}
         <div className="flex items-center gap-3">
           {onMenuToggle && (
             <button
@@ -56,12 +51,8 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
             </button>
           )}
 
-          {/* Logo */}
-          <button
-            onClick={() => router.push('/citizen')}
-            className="flex items-center gap-2 group"
-          >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+          <button onClick={() => router.push('/citizen')} className="flex items-center gap-2 group">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center shadow-sm">
               <MapPin className="w-4 h-4 text-white" />
             </div>
             <span className="font-extrabold text-sm text-[var(--text-primary)] tracking-tight hidden sm:block">
@@ -69,7 +60,6 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
             </span>
           </button>
 
-          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center gap-1 ml-4">
             {navLinks.map((link) => {
               const Icon = link.icon
@@ -92,19 +82,14 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
           </div>
         </div>
 
-        {/* Right — Actions */}
         <div className="flex items-center gap-2">
-
-          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-[var(--text-secondary)] transition-colors"
-            title={isDark ? 'Light mode' : 'Dark mode'}
           >
             {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
 
-          {/* Notifications */}
           <div className="relative">
             <button
               onClick={() => { setShowNotifs(!showNotifs); setShowUserMenu(false) }}
@@ -121,7 +106,7 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
                 <div className="px-4 py-3 border-b border-[var(--border-color)] flex items-center justify-between">
                   <span className="text-sm font-bold text-[var(--text-primary)]">Notifications</span>
                   {unreadCount > 0 && (
-                    <span className="text-xs bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 px-2 py-0.5 rounded-full font-medium">
+                    <span className="text-xs bg-rose-100 dark:bg-rose-900/30 text-rose-600 px-2 py-0.5 rounded-full font-medium">
                       {unreadCount} new
                     </span>
                   )}
@@ -136,9 +121,7 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
                       <button
                         key={notif.id}
                         onClick={() => markNotificationRead(notif.id)}
-                        className={`w-full text-left px-4 py-3 border-b border-[var(--border-color)] hover:bg-teal-50/50 dark:hover:bg-teal-900/10 transition-colors ${
-                          !notif.read ? 'bg-teal-50/30 dark:bg-teal-900/10' : ''
-                        }`}
+                        className={`w-full text-left px-4 py-3 border-b border-[var(--border-color)] hover:bg-teal-50/50 dark:hover:bg-teal-900/10 transition-colors ${!notif.read ? 'bg-teal-50/30 dark:bg-teal-900/10' : ''}`}
                       >
                         <div className="flex items-start gap-2">
                           <span className="text-base mt-0.5">
@@ -148,9 +131,7 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
                             <p className="text-xs font-semibold text-[var(--text-primary)]">{notif.title}</p>
                             <p className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-2">{notif.message}</p>
                           </div>
-                          {!notif.read && (
-                            <div className="w-2 h-2 bg-teal-500 rounded-full mt-1 flex-shrink-0" />
-                          )}
+                          {!notif.read && <div className="w-2 h-2 bg-teal-500 rounded-full mt-1 flex-shrink-0" />}
                         </div>
                       </button>
                     ))
@@ -160,7 +141,6 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
             )}
           </div>
 
-          {/* User Menu */}
           {isLoggedIn ? (
             <div className="relative">
               <button
@@ -178,7 +158,7 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
                 </div>
                 <div className="hidden sm:block text-left">
                   <p className="text-xs font-semibold text-[var(--text-primary)] leading-none">{currentUser?.name}</p>
-                  <p className="text-xs text-teal-500 mt-0.5">{currentUser?.role ? roleLabel[currentUser.role] : ''}</p>
+                  <p className="text-xs text-teal-500 mt-0.5">{currentUser?.role}</p>
                 </div>
               </button>
 
@@ -209,7 +189,6 @@ export function Navbar({ onMenuToggle, sidebarOpen }: NavbarProps) {
         </div>
       </div>
 
-      {/* Click outside to close dropdowns */}
       {(showNotifs || showUserMenu) && (
         <div
           className="fixed inset-0 z-30"
